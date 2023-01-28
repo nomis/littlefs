@@ -3328,11 +3328,15 @@ static lfs_ssize_t lfs_file_flushedwrite(lfs_t *lfs, lfs_file_t *file,
     lfs_size_t nsize = size;
 
     if ((file->flags & LFS_F_INLINE) &&
+#if 0
             lfs_max(file->pos+nsize, file->ctz.size) >
             lfs_min(0x3fe, lfs_min(
                 lfs->cfg->cache_size,
                 (lfs->cfg->metadata_max ?
                     lfs->cfg->metadata_max : lfs->cfg->block_size) / 8))) {
+#else
+            1) {
+#endif
         // inline file doesn't fit anymore
         int err = lfs_file_outline(lfs, file);
         if (err) {
